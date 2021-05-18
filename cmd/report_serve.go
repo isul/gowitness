@@ -86,7 +86,14 @@ func submitHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fn := lib.SafeFileName(url.String())
+		fn := ""
+		fileName := strings.TrimSpace(r.FormValue("fileName"))
+		if fileName == "" {
+			fn = lib.SafeFileName(url.String())
+		} else {
+			fn = fileName
+		}
+
 		fp := lib.ScreenshotPath(fn, url, options.ScreenshotPath)
 
 		resp, title, err := chrm.Preflight(url)
